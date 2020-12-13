@@ -1,22 +1,8 @@
 #!/usr/bin/env groovy
 
-/**
- * Given matchingValue in matchingColumn
- * @param matchingValue The value that is in matchingColumn
- * @param matchingColumn The column to search
- * @return boolean
- * @see #checkValue(String)
- */
-Object checkValue(String matchingValue, String matchingColumn) {
-    def column_number = sh(returnStdout: true, script: awk -F',' '{for(i=1;i<=NF;i++) {if($i == "${matchingColumn}") printf("%d", i)} exit 0 }' libraryResource('test.csv'))
-    def map_script= $/grep \^${matchingValue} libraryResource('test.csv') | awk -F ',' '{print ${column_number}}'/$
-    match = sh(returnStdout: true, script: map_script).trim()
-    if ( match != null ) {
-        return true
-    } else {
-        return false
-    }
-}
+@Grab('com.xlson.groovycsv:groovycsv:1.0')
+import com.xlson.groovycsv.CsvParser
+
 
 /**
  * Given matchingValue in matchingColumn return the value in returnColumn
@@ -28,5 +14,13 @@ Object checkValue(String matchingValue, String matchingColumn) {
  * @see #matchValue(String)
  */
 Object matchValue(String matchingValue, String matchingColumn, String returnColumn) {
-
+    new File(libraryResource('test.csv')).withReader { f ->
+      def data = new CsvParser().parse(f)
+      def match = data.find{(it."${matchingColumn}" as String) == "${matchingValue}"}?."${returnColumn}"
+      if ( match != null ) {
+          return "${match}"
+      } else {
+          return false
+      }
+    }
 }
