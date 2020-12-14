@@ -21,5 +21,4 @@ Object matchValue(String matchingValue, String matchingColumn, String returnColu
       } else {
           return false
       }
-    }
 }
