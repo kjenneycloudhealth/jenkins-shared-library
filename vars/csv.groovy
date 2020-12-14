@@ -16,9 +16,5 @@ import com.xlson.groovycsv.CsvParser
 Object matchValue(String matchingValue, String matchingColumn, String returnColumn) {
       def data = new CsvParser().parse(libraryResource('test.csv'))
       def match = data.find{(it."${matchingColumn}" as String) == "${matchingValue}"}?."${returnColumn}"
-      if ( match != null ) {
-          return "${match}"
-      } else {
-          return false
-      }
+      if ( match != null ) {return "${match}"}
 }
