@@ -1,4 +1,5 @@
-column1,column2,column3
-apples,red,tree
-bananas,yellow,ground
+type,color,origin
+apple,red,tree
+banana,yellow,ground
 avacado,green,ground
+lemon,yellow,tree
